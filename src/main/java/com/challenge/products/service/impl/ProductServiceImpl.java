@@ -9,7 +9,6 @@ import com.challenge.products.service.ProductService;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,11 +16,12 @@ import reactor.core.publisher.Mono;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-  @Autowired
   private final ProductRepository repository;
+  private final Clock clock;
 
-  ProductServiceImpl(ProductRepository repository) {
+  public ProductServiceImpl(ProductRepository repository, Clock clock) {
     this.repository = repository;
+    this.clock = clock;
   }
 
   @Override
@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
 
 
   private Product toNewProduct(ProductRequest request) {
-    Instant now = Clock.systemUTC().instant();
+    Instant now = clock.instant();
     return new Product(
         null,
         normalizedName(request),
@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
         request.price(),
         request.stock(),
         existing.createdAt(),
-        Clock.systemUTC().instant()
+        clock.instant()
     );
   }
 
