@@ -6,6 +6,7 @@ import com.challenge.products.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,12 @@ public class ProductController {
   @GetMapping
   public Flux<ProductResponse> findAll() {
     return service.findAll()
+        .map(ProductResponse::from);
+  }
+
+  @GetMapping("/{id}")
+  public Mono<ProductResponse> findById(@PathVariable Long id) {
+    return service.findById(id)
         .map(ProductResponse::from);
   }
 

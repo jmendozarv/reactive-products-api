@@ -3,6 +3,7 @@ package com.challenge.products.service.impl;
 import com.challenge.products.domain.Product;
 import com.challenge.products.dto.ProductRequest;
 import com.challenge.products.exception.InvalidProductException;
+import com.challenge.products.exception.ProductNotFoundException;
 import com.challenge.products.repository.ProductRepository;
 import com.challenge.products.service.ProductService;
 import java.time.Clock;
@@ -37,7 +38,8 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Mono<Product> findById(Long id) {
-    return null;
+    return repository.findById(id)
+        .switchIfEmpty(Mono.error(new ProductNotFoundException(id)));
   }
 
   @Override
