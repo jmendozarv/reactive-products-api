@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Flux<Product> findAll() {
-    return null;
+    return repository.findAll();
   }
 
   @Override
