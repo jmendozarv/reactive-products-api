@@ -51,7 +51,8 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Mono<Void> delete(Long id) {
-    return null;
+    return findById(id)
+        .flatMap(repository::delete);
   }
 
 
