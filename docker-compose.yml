@@ -1,0 +1,10 @@
+services:
+  products-api:
+    build: .
+    container_name: reactive-products-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_R2DBC_URL: r2dbc:h2:mem:///productsdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      SPRING_R2DBC_USERNAME: sa
+      SPRING_R2DBC_PASSWORD:
