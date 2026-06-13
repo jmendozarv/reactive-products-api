@@ -44,7 +44,9 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Mono<Product> update(Long id, ProductRequest request) {
-    return null;
+    return findById(id)
+        .map(existing -> merge(existing, request))
+        .flatMap(repository::save);
   }
 
   @Override
@@ -78,6 +80,18 @@ public class ProductServiceImpl implements ProductService {
         .map(String::trim)
         .filter(description -> !description.isBlank())
         .orElse(null);
+  }
+
+  private Product merge(Product existing, ProductRequest request) {
+    return new Product(
+        existing.id(),
+        normalizedName(request),
+        normalizedDescription(request),
+        request.price(),
+        request.stock(),
+        existing.createdAt(),
+        Clock.systemUTC().instant()
+    );
   }
 
 }
